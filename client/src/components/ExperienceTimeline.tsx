@@ -20,7 +20,7 @@ const experiences: Experience[] = [
     role: "ML/CV Engineer Intern",
     company: "Aubay",
     location: "Paris, France",
-    period: "2024",
+    period: "2025 Sep - Present",
     description:
       "Developed a real-time sign language to text translation system using machine learning and computer vision. Worked with TensorFlow, OpenCV, and MediaPipe for gesture recognition.",
     type: "work",

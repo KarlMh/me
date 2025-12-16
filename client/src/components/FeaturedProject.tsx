@@ -60,10 +60,6 @@ export default function FeaturedProject({ onLearnMore }: FeaturedProjectProps) {
                     <Brain className="h-3 w-3" />
                     ML
                   </Badge>
-                  <Badge variant="secondary" className="gap-1">
-                    <Camera className="h-3 w-3" />
-                    CV
-                  </Badge>
                 </div>
               </div>
             </InteractiveCard>
@@ -108,10 +104,6 @@ export default function FeaturedProject({ onLearnMore }: FeaturedProjectProps) {
               <Button onClick={onLearnMore} data-testid="button-learn-more">
                 <Eye className="h-4 w-4 mr-2" />
                 Learn More
-              </Button>
-              <Button variant="outline" data-testid="button-github">
-                <Github className="h-4 w-4 mr-2" />
-                View Code
               </Button>
             </div>
           </motion.div>
