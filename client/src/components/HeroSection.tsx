@@ -1,15 +1,53 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowDown, Download, Sparkles } from "lucide-react";
+import { ArrowDown, Sparkles, FileText } from "lucide-react";
 import { motion } from "framer-motion";
 import heroBackground from "@assets/generated_images/tech_hero_background_gradient.png";
+import PDFDownload from "./PDFDownload";
 
 interface HeroSectionProps {
   onViewProjects?: () => void;
-  onDownloadCV?: () => void;
 }
 
-export default function HeroSection({ onViewProjects, onDownloadCV }: HeroSectionProps) {
+const roles = [
+  "AI & Machine Learning Enthusiast",
+  "Computer Vision Developer",
+  "Full Stack Engineer",
+  "Problem Solver",
+];
+
+export default function HeroSection({ onViewProjects }: HeroSectionProps) {
+  const [currentRole, setCurrentRole] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isTyping, setIsTyping] = useState(true);
+
+  useEffect(() => {
+    const role = roles[currentRole];
+    
+    if (isTyping) {
+      if (displayText.length < role.length) {
+        const timeout = setTimeout(() => {
+          setDisplayText(role.slice(0, displayText.length + 1));
+        }, 80);
+        return () => clearTimeout(timeout);
+      } else {
+        const timeout = setTimeout(() => setIsTyping(false), 2000);
+        return () => clearTimeout(timeout);
+      }
+    } else {
+      if (displayText.length > 0) {
+        const timeout = setTimeout(() => {
+          setDisplayText(displayText.slice(0, -1));
+        }, 40);
+        return () => clearTimeout(timeout);
+      } else {
+        setCurrentRole((prev) => (prev + 1) % roles.length);
+        setIsTyping(true);
+      }
+    }
+  }, [displayText, isTyping, currentRole]);
+
   const scrollToProjects = () => {
     onViewProjects?.();
     document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
@@ -29,23 +67,41 @@ export default function HeroSection({ onViewProjects, onDownloadCV }: HeroSectio
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-24">
         <div className="flex flex-col items-center text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, type: "spring" }}
           >
             <Badge variant="secondary" className="mb-6 gap-2">
-              <Sparkles className="h-3 w-3" />
+              <motion.div
+                animate={{ rotate: [0, 15, -15, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Sparkles className="h-3 w-3" />
+              </motion.div>
               <span className="font-mono text-xs">Open to Opportunities</span>
             </Badge>
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-4"
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="font-serif text-5xl md:text-6xl lg:text-8xl font-bold text-foreground mb-4"
           >
-            Karl Mehanna
+            <motion.span
+              className="inline-block"
+              whileHover={{ scale: 1.05, color: "hsl(var(--primary))" }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              Karl
+            </motion.span>{" "}
+            <motion.span
+              className="inline-block"
+              whileHover={{ scale: 1.05, color: "hsl(var(--primary))" }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              Mehanna
+            </motion.span>
           </motion.h1>
 
           <motion.p
@@ -57,14 +113,21 @@ export default function HeroSection({ onViewProjects, onDownloadCV }: HeroSectio
             Computer Engineer Student
           </motion.p>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="font-mono text-sm text-primary mb-8"
+            className="h-8 mb-8"
           >
-            AI & Machine Learning Enthusiast
-          </motion.p>
+            <span className="font-mono text-sm md:text-base text-primary">
+              {displayText}
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity }}
+                className="inline-block w-[2px] h-5 bg-primary ml-1 align-middle"
+              />
+            </span>
+          </motion.div>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -83,18 +146,14 @@ export default function HeroSection({ onViewProjects, onDownloadCV }: HeroSectio
             transition={{ duration: 0.5, delay: 0.5 }}
             className="flex flex-wrap justify-center gap-4"
           >
-            <Button size="lg" onClick={scrollToProjects} data-testid="button-view-projects">
-              View Projects
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={onDownloadCV}
-              data-testid="button-download-cv"
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Download CV
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button size="lg" onClick={scrollToProjects} data-testid="button-view-projects">
+                View Projects
+              </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <PDFDownload />
+            </motion.div>
           </motion.div>
         </div>
 
@@ -107,6 +166,8 @@ export default function HeroSection({ onViewProjects, onDownloadCV }: HeroSectio
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
+            className="cursor-pointer"
+            onClick={() => document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" })}
           >
             <ArrowDown className="h-6 w-6 text-muted-foreground" />
           </motion.div>

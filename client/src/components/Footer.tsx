@@ -9,7 +9,7 @@ const socialLinks = [
   },
   {
     name: "GitHub",
-    href: "https://github.com/karlmehanna",
+    href: "https://github.com/KarlMh",
     icon: SiGithub,
   },
 ];

@@ -1,9 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { ExternalLink, Github, Eye, Brain, Camera } from "lucide-react";
 import { motion } from "framer-motion";
 import signLanguageImage from "@assets/generated_images/sign_language_ml_project_visual.png";
+import InteractiveCard from "./InteractiveCard";
 
 interface FeaturedProjectProps {
   onLearnMore?: () => void;
@@ -45,12 +45,14 @@ export default function FeaturedProject({ onLearnMore }: FeaturedProjectProps) {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="lg:col-span-3"
           >
-            <Card className="overflow-hidden p-0">
+            <InteractiveCard className="overflow-hidden p-0">
               <div className="relative aspect-video">
-                <img
+                <motion.img
                   src={signLanguageImage}
                   alt="Sign Language Translation Project - Computer Vision and ML"
                   className="w-full h-full object-cover"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.4 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                 <div className="absolute bottom-4 left-4 flex gap-2">
@@ -64,7 +66,7 @@ export default function FeaturedProject({ onLearnMore }: FeaturedProjectProps) {
                   </Badge>
                 </div>
               </div>
-            </Card>
+            </InteractiveCard>
           </motion.div>
 
           <motion.div
